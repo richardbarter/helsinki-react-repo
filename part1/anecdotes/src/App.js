@@ -35,6 +35,9 @@ const App = () => {
     //this doesn't display updated points until the app is rerendered? 
       //upon investigation, it is true that changes are only reflected when component re-renders, which is why it does not reflect in below. 
     console.log('points: ', points)
+
+    
+  
   }
   
   const getMaxVoteText = () => {
