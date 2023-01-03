@@ -20,7 +20,7 @@ const App = () => {
   }
 
   useEffect(hook, [])
-  console.log('render', notes.length, 'notes')
+  //console.log('render', notes.length, 'notes')
 
   const addNote = (event) => {
     event.preventDefault()
@@ -28,15 +28,28 @@ const App = () => {
       content: newNote,
       date: new Date().toISOString(),
       important: Math.random() < 0.5,
-      id: notes.length + 1,
+      //id: notes.length + 1,
     }
+
+    console.log('note objec tis: ', noteObject);
+
+
+    axios
+    .post('http://localhost:3001/notes', noteObject)
+    .then(response => {
+      console.log(response)
+      setNotes(notes.concat(response.data))
+      setNewNote('')
+      console.log('after set notes');
+    }) 
+
+
   
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
+
   }
 
   const handleNoteChange = (event) => {
-    console.log(event.target.value)
+    //console.log(event.target.value)
     setNewNote(event.target.value)
   }
 
@@ -44,6 +57,8 @@ const App = () => {
     ? notes
     : notes.filter(note => note.important === true)
 
+  console.log('before render');
+  console.log('notes are ', notesToShow);
   return (
     <div>
       <h1>Notes</h1>

@@ -35,6 +35,7 @@ const App = () => {
  
   const handleShowCountryClick = ({country}) => {
     setNewFilter(country.name.common)
+    //instead of including, need to find exact match
   } 
 
   const countriesToShow = showAll
