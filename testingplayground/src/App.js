@@ -5,6 +5,9 @@ import axios from 'axios'
 import Note from './components/Note'
 
 const App = () => {
+  //maybe try what is suggested here.  - https://stackoverflow.com/questions/44748073/npm5-package-lock-json-different-entries-on-different-machines
+  //for development build not optimised. Seems like push from this laptop significantly changed the package-lock.json contents.
+  //may need to delete them and then run npm install again, and then from other complete, delete those files, and then pull the new ones. 
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true) 
@@ -31,9 +34,6 @@ const App = () => {
       //id: notes.length + 1,
     }
 
-    console.log('note objec tis: ', noteObject);
-
-
     axios
     .post('http://localhost:3001/notes', noteObject)
     .then(response => {
@@ -53,6 +53,10 @@ const App = () => {
     setNewNote(event.target.value)
   }
 
+  const toggleImportanceOf = (id) => {
+    console.log('importance of ' + id + ' needs to be toggled')
+  }
+
   const notesToShow = showAll
     ? notes
     : notes.filter(note => note.important === true)
@@ -69,7 +73,11 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map(note => 
-          <Note key={note.id} note={note} />
+          <Note 
+            key={note.id} 
+            note={note}
+            toggleImportance={() => toggleImportanceOf(note.id)}
+          />
         )}
       </ul>
       <form onSubmit={addNote}>
