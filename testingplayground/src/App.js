@@ -1,8 +1,10 @@
 
 
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+
 import Note from './components/Note'
+import Footer from './components/Footer'
+import Notification from './components/Notification' 
 import noteService from './services/notes'
 
 const App = () => {
@@ -12,6 +14,7 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true) 
+  const [errorMessage, setErrorMessage] = useState(null)
 
   //before using service was this way:
   //   const hook = () => {
@@ -28,10 +31,10 @@ const App = () => {
   //after using service:
   
   useEffect(() => {
-    notesService
+    noteService
       .getAll()
       .then(initialNotes => {
-        setNotes(InitialNotes)
+        setNotes(initialNotes)
       })
   }, [])
 
@@ -81,9 +84,13 @@ const App = () => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
       })
       .catch(error => {
-        alert(
-          `the note '${note.content}' was already deleted from server`
+        console.log('in catch error');
+        setErrorMessage(
+          `Note '${note.content}' was already removed from the server`
         )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setNotes(notes.filter(n => n.id !== id))
       })
   }
@@ -97,6 +104,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }
@@ -117,7 +125,8 @@ const App = () => {
           onChange={handleNoteChange}
         />
         <button type="submit">save</button>
-      </form>  
+      </form>
+      <Footer />  
     </div>
   )
 }

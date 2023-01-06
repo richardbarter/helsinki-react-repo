@@ -3,7 +3,7 @@ import Person from './Person'
 
 
 const Persons = ({persons}) => {
-    console.log('persons', persons);
+    //console.log('persons', persons);
   return (
     <>
         {persons.map(person =>
