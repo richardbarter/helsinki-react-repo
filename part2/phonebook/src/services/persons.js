@@ -1,13 +1,15 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
+//const baseUrl = 'http://localhost:3001/api/persons'
+//const baseUrl = 'https://redcoat-phonebook-1212.fly.dev/api/persons'
+const baseUrl = '/api/persons'
 
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
 
-const create = noteObject => {
-  const request = axios.post(baseUrl, noteObject)
+const create = personObject => {
+  const request = axios.post(baseUrl, personObject)
   return request.then(response => response.data)
 }
 

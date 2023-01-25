@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Person from './components/Person'
 import PersonForm from './components/PersonForm'
 import Notification from './components/Notification.js' 
@@ -24,6 +23,7 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  //instead of an additional hook, style should have been included in errorMessage. 
   const [errorStyle, setErrorStyle] = useState('')
   console.log('show all state', showAll)
 
@@ -55,7 +55,7 @@ const App = () => {
 
         const person = persons.find(p => p.name === newName)
         console.log('test new nuymber, found person is', person);
-        const changedPerson = {... person, number: newNumber}
+        const changedPerson = {...person, number: newNumber}
 
         personService
           .update(person.id, changedPerson)
@@ -107,6 +107,14 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('');
         setNewNumber('');
+      })
+      .catch(error => {
+        console.log(error.response.data.error);
+        setErrorStyle('error')
+        setErrorMessage(error.response.data.error)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
       })
     
   }

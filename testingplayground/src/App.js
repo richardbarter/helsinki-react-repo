@@ -8,6 +8,7 @@ import Notification from './components/Notification'
 import noteService from './services/notes'
 
 const App = () => {
+  console.log('in app notes');
   //maybe try what is suggested here.  - https://stackoverflow.com/questions/44748073/npm5-package-lock-json-different-entries-on-different-machines
   //for development build not optimised. Seems like push from this laptop significantly changed the package-lock.json contents.
   //may need to delete them and then run npm install again, and then from other complete, delete those files, and then pull the new ones. 
