@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "A time in Space",
-  "author": "James Holden",
+  "title": "Another One",
+  "author": "DJ Kalid",
   "url": "www.google.com",
-  "likes": 85
+  "likes": 20
 }
