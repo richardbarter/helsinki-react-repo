@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/63e543b19ad9f5d076b93cc0
+Content-Type: application/json
+
+{
+  "title": "Another One",
+  "author": "DJ Kalid Three",
+  "url": "www.somewebsitetwo.com",
+  "likes": 20
+}
