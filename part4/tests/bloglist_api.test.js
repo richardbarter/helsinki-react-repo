@@ -3,21 +3,49 @@ const supertest = require('supertest')
 const bcrypt = require('bcrypt')
 const helper = require('./test_helper')
 const app = require('../app')
+const jwt = require('jsonwebtoken')
 
 const api = supertest(app)
 
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const { request } = require('../app')
 
 describe('When there is initiall some blogs saved', () => {
+  let token
   beforeEach(async () => {
     await Blog.deleteMany({})
     const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
   
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
+
+    await User.deleteMany({})
+    // const userObjects = helper.initialUsers.map(user => new User(user))
+    // const userPromiseArray = userObjects.map(user => user.save())
+    // await Promise.all(userPromiseArray)
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash('beltalowda', saltRounds)
+    const newUser = new User({
+      username: "Drummer1",
+      name: "Camina Drummer",
+      passwordHash: passwordHash
+    })
+    await newUser.save()
+    const loginAs = {
+      "username": "Drummer1",
+      "password": "beltalowda"
+    }
+    const user = await api
+      .post('/api/login')
+      .send(loginAs)
+      .expect(200)
+      //.expect('Content-Type', /application\/json/)
+
+    console.log('user body is', user.body);
+    token = user.body.token
     //login and get token?
-    //const token = ...;
+    
   
   })
   describe('where there is initially some blogs saved', () => {
@@ -52,15 +80,16 @@ describe('When there is initiall some blogs saved', () => {
         likes: 50
       } 
       
+      
       await api
         .post('/api/blogs')
         .send(newBlog)
-        .setHeader('Authorization', token)
+        .set('Authorization', `Bearer ${token}`)
         .expect(201)
         .expect('Content-Type', /application\/json/)
     
       const blogsAtEnd = await helper.blogsInDb()
-      console.log('blogs at end', blogsAtEnd);
+      //console.log('blogs at end', blogsAtEnd);
       expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
     })
     
@@ -74,6 +103,9 @@ describe('When there is initiall some blogs saved', () => {
       const resultBlog = await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
     
       console.log('result blog is', resultBlog.body);
       expect(resultBlog.body.likes).toBe(0)
@@ -88,7 +120,9 @@ describe('When there is initiall some blogs saved', () => {
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', `Bearer ${token}`)
         .expect(400)
+        
     
       const blogsAtEnd = await helper.blogsInDb()
     
@@ -105,6 +139,7 @@ describe('When there is initiall some blogs saved', () => {
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', `Bearer ${token}`)
         .expect(400)
     
       const blogsAtEnd = await helper.blogsInDb()
@@ -118,14 +153,33 @@ describe('When there is initiall some blogs saved', () => {
   describe('deletion of a blog', () => {
     test('succeeds with status code 204 if id is valid', async () => {
       const blogsAtStart = await helper.blogsInDb()
-      const blogToDelete = blogsAtStart[0]
+      // const blogToDelete = blogsAtStart[0]
+      //can only delete if this user added it, so first need to add a blog and then delete the added blog
+      const newBlog = {
+        title: 'blog for delete',
+        author: 'Michael Scott',
+        url: 'www.google.com',
+        likes: 70
+      }
+
+
+
+      const blogAdded = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .set('Authorization', `Bearer ${token}`)
+
+      const blogsInMiddle = await helper.blogsInDb()
+      expect(blogsInMiddle).toHaveLength(helper.initialBlogs.length + 1)
+      const blogToDelete = blogAdded.body
   
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(204)
   
       const blogsAtEnd = await helper.blogsInDb()
-      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
       const blogIds = blogsAtEnd.map(b => b.id)
       expect(blogIds).not.toContain(blogToDelete.id)
     })
@@ -163,6 +217,28 @@ describe('When there is initiall some blogs saved', () => {
     })
     test('fails with status code 400 if data invalid', async () => {
       
+    })
+
+    test('adding blog fails with 401 if a token is not provided', async () => {
+      
+      const newBlog = {
+        title: 'blog example',
+        author: 'Camina Drummer',
+        url: 'www.google.comm',
+        likes: 50
+      } 
+     
+      token = null
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(401)
+        .expect('Content-Type', /application\/json/)
+    
+      const blogsAtEnd = await helper.blogsInDb()
+      console.log('blogs at end', blogsAtEnd);
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
     })
   })
 

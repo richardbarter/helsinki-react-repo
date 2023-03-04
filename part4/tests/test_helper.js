@@ -16,6 +16,19 @@ const initialBlogs = [
   }
 ]
 
+// const initialUsers = [
+//   {
+//     username: 'Drummer1',
+//     name: "Camina Drummer",
+//     passwordHash: "beltalowda"
+//   },
+//   {
+//     username: "Jimmy",
+//     name: "James Holden",
+//     password: "eartha"
+//   }
+// ]
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())

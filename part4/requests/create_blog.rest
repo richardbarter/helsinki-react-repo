@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRydW1tZXIxIiwiaWQiOiI2M2VlOGZlZDBhODAxNTAxNTNhOWE3OWIiLCJpYXQiOjE2Nzc2MDkzMDh9.Q_SDqulIQ7Hndr26cdlbthofJWyOeXf1yyF4CD7Obd0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRydW1tZXIxIiwiaWQiOiI2M2VlOGZlZDBhODAxNTAxNTNhOWE3OWIiLCJpYXQiOjE2Nzc3ODI4NjZ9.5n43_55t4MKgA9OyAMiI1O6pJV5ygrX5PEMcd58IVRE
 
 {
-  "title": "Another One ten",
+  "title": "Another One eleven",
   "author": "James Holden",
   "url": "www.google.co.uk",
   "likes": 20

@@ -20,9 +20,12 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   console.log('in post new blog')
+  console.log('request body is', request.body);
+  console.log('request user is', request.user);
   const body = request.body
 
   const user = await User.findById(request.user)
+  console.log('user found is', user);
 
   const blog = new Blog({
     title: body.title,
@@ -45,6 +48,7 @@ blogsRouter.delete('/:id', async (request, response) => {
 
   //userid of logged in user
   const user = request.user
+  console.log('delete request user is ', request.user);
 
   //get user who created blog
   const blog = await Blog.findById(request.params.id)
