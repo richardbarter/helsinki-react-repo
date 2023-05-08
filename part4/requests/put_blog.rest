@@ -1,9 +1,10 @@
-PUT http://localhost:3003/api/blogs/63e543b19ad9f5d076b93cc0
+PUT http://localhost:3003/api/blogs/63d195b9dcb8bdb0156bf74e
 Content-Type: application/json
 
 {
-  "title": "Another One",
-  "author": "DJ Kalid Three",
+  "title": "Hello Blog Change",
+  "author": "Camina Drummer",
   "url": "www.somewebsitetwo.com",
-  "likes": 20
+  "likes": 50,
+  "user": "63ee8fed0a80150153a9a79b"
 }

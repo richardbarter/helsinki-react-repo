@@ -10,10 +10,10 @@ usersRouter.get('/', async (request, response) => {
   response.json(users)
 })
 usersRouter.post('/', async (request, response) => {
-  const {username, name, password } = request.body
+  const { username, name, password } = request.body
 
   const saltRounds = 10
- 
+
   //check that password is longer than 3 characters and exists
   if(!password){
     return response.status(400).json({

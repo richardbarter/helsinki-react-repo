@@ -28,6 +28,7 @@ loginRouter.post('/', async (request, response) => {
     process.env.SECRET,
     { expiresIn: 60*60 }
   )
+  console.log('logged in? ', user)
 
   response
     .status(200)
