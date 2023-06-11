@@ -1,19 +1,18 @@
 import { useSelector } from 'react-redux'
 const Notification = () => {
   const notificationData = useSelector((state) => {
-    console.log('noti selector state is', state)
     return state.notification
   })
   if (!notificationData) {
     return null
   }
   const message = notificationData.content
+  const style = notificationData.errorType
 
   console.log('notification data is', notificationData)
 
-  const style = notificationData.errorType
   let className = 'error'
-  if (style === 'success') {
+  if (style && style === 'success') {
     className = 'success'
   }
 

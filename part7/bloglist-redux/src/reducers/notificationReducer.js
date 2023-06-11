@@ -5,8 +5,6 @@ export const notificationSlice = createSlice({
   initialState: null,
   reducers: {
     set: (state, action) => {
-      console.log('notification set  state', JSON.parse(JSON.stringify(state)))
-      console.log('notification set action', action)
       return action.payload
     },
     clear(state, action) {
