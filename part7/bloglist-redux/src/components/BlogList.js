@@ -25,6 +25,7 @@ const BlogList = () => {
   }
 
   const handleDeleteBlog = async (id) => {
+    console.log('test change');
     console.log('in handle delete blog. id is', id)
     const blogObject = blogs.find((blog) => blog.id === id)
     //current error soemthing to do with user. delete request user is undefined. controllers/blogs.js 74
